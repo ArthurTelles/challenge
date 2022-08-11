@@ -1,7 +1,10 @@
-import 'package:challenge/login_page.dart';
+import 'package:challenge/pages/login_page.dart';
+import 'package:challenge/classes/data_classes.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LoginData.init();
   runApp(const MyApp());
 }
 
@@ -39,6 +42,11 @@ class _RootPageState extends State<RootPage> {
   List<Widget> pages = const [LoginPage()];
   @override
   Widget build(BuildContext context) {
+    String? accessToken = LoginData.getAccessToken();
+    debugPrint('accessToken $accessToken');
+    if (accessToken != null) {
+      debugPrint('Has login');
+    }
     return Scaffold(
       body: pages[currentPage],
     );
