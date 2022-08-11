@@ -1,5 +1,8 @@
-import 'package:challenge/classes/classes.dart';
+import 'package:challenge/classes/data_classes.dart';
+import 'package:challenge/dio/dio_client.dart';
+import 'package:challenge/dio/response_classes.dart';
 import 'package:challenge/widgets/custom_form_widget.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -10,7 +13,33 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var loginData = LoginData("", "");
+  bool loading = false;
+  String accessToken = '';
+  var loginData = LoginData('', '');
+
+  DioClient dio = DioClient();
+  UserLogin userLogin = UserLogin();
+
+  Future loginUser() async {
+    Response response;
+    try {
+      response = await dio.getRequest('login');
+      if (response.statusCode == 200) {
+        await LoginData.init();
+        setState(() {
+          userLogin = UserLogin.fromJson(response.data);
+          accessToken = userLogin.accessToken!;
+          LoginData.setAccessToken(accessToken);
+        });
+      } else {
+        print('Response error ${response.statusCode}');
+      }
+    } on Exception catch (error) {
+      print(error);
+    }
+    loading = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,15 +106,27 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    color: Color(0xFF5B4DA7),
-                    fontSize: 16,
-                  ),
-                ),
+                child: loading
+                    ? const CircularProgressIndicator()
+                    : const Text(
+                        'Login',
+                        style: TextStyle(
+                          color: Color(0xFF5B4DA7),
+                          fontSize: 16,
+                        ),
+                      ),
                 onPressed: () {
-                  debugPrint("login");
+                  if (loginData.email == '' || loginData.password == '') {
+                    const snackBar = SnackBar(
+                      content:
+                          Text('Email ou Password inválido, tente novamente.'),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    debugPrint("login");
+                    setState(() => loading = true);
+                    loginUser();
+                  }
                 },
               ),
             ),
