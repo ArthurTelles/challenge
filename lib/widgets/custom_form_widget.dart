@@ -5,9 +5,11 @@ typedef Callback = void Function(FormData value);
 
 class CustomFormWidget extends StatefulWidget {
   final String label;
+  final bool isPassWord;
   final Callback callback;
   const CustomFormWidget({
     required this.label,
+    required this.isPassWord,
     required this.callback,
     Key? key,
   }) : super(key: key);
@@ -18,7 +20,6 @@ class CustomFormWidget extends StatefulWidget {
 
 class _CustomFormWidgetState extends State<CustomFormWidget> {
   var formData = FormData("", false);
-  bool isPassword() => widget.label.toLowerCase() == 'password';
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class _CustomFormWidgetState extends State<CustomFormWidget> {
         SizedBox(
           width: 348,
           child: TextFormField(
-            obscureText: isPassword() && !formData.showPassword,
+            obscureText: widget.isPassWord && !formData.showPassword,
             cursorColor: Colors.white,
             decoration: InputDecoration(
               filled: true,
@@ -48,7 +49,7 @@ class _CustomFormWidgetState extends State<CustomFormWidget> {
               contentPadding: const EdgeInsets.all(16.0),
               border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5))),
-              suffixIcon: isPassword()
+              suffixIcon: widget.isPassWord
                   ? IconButton(
                       icon: Icon(
                         formData.showPassword

@@ -1,3 +1,4 @@
+import 'package:challenge/pages/list_page.dart';
 import 'package:challenge/pages/login_page.dart';
 import 'package:challenge/classes/data_classes.dart';
 import 'package:flutter/material.dart';
@@ -39,13 +40,14 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int currentPage = 0;
-  List<Widget> pages = const [LoginPage()];
+  List<Widget> pages = const [LoginPage(), ListPage()];
   @override
   Widget build(BuildContext context) {
     String? accessToken = LoginData.getAccessToken();
     debugPrint('accessToken $accessToken');
     if (accessToken != null) {
       debugPrint('Has login');
+      setState(() => currentPage = 1);
     }
     return Scaffold(
       body: pages[currentPage],
