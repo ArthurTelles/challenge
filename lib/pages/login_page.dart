@@ -1,6 +1,8 @@
 import 'package:challenge/classes/data_classes.dart';
 import 'package:challenge/dio/dio_client.dart';
 import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/pages/list_page.dart';
+import 'package:challenge/pages/register_page.dart';
 import 'package:challenge/widgets/custom_form_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +32,19 @@ class _LoginPageState extends State<LoginPage> {
           userLogin = UserLogin.fromJson(response.data);
           accessToken = userLogin.accessToken!;
           LoginData.setAccessToken(accessToken);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return const ListPage();
+              },
+            ),
+          );
         });
       } else {
-        print('Response error ${response.statusCode}');
+        debugPrint('Response error ${response.statusCode}');
       }
     } on Exception catch (error) {
-      print(error);
+      debugPrint('error $error');
     }
     loading = false;
   }
@@ -82,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
               margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: CustomFormWidget(
                 label: 'Email',
+                isPassWord: false,
                 callback: ((value) => loginData.email = value.input),
               ),
             ),
@@ -89,6 +99,7 @@ class _LoginPageState extends State<LoginPage> {
               margin: const EdgeInsets.fromLTRB(0, 21, 0, 0),
               child: CustomFormWidget(
                 label: 'Password',
+                isPassWord: true,
                 callback: ((value) => loginData.password = value.input),
               ),
             ),
@@ -145,6 +156,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onPressed: () {
                   debugPrint("register");
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) {
+                        return const RegisterPage();
+                      },
+                    ),
+                  );
                 },
               ),
             ),
