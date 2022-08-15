@@ -1,4 +1,4 @@
-import 'package:challenge/pages/list_page.dart';
+import 'package:challenge/pages/paints_page.dart';
 import 'package:challenge/pages/login_page.dart';
 import 'package:challenge/classes/data_classes.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class RootPage extends StatefulWidget {
 
 class _RootPageState extends State<RootPage> {
   int currentPage = 0;
-  List<Widget> pages = const [LoginPage(), ListPage()];
+  List<Widget> pages = const [LoginPage(), PaintsPage()];
   @override
   Widget build(BuildContext context) {
     String? accessToken = LoginData.getAccessToken();
