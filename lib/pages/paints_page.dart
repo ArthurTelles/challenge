@@ -1,7 +1,4 @@
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/dio/response_classes.dart';
-import 'package:challenge/widgets/paint_widget.dart';
-import 'package:dio/dio.dart';
+import 'package:challenge/widgets/paint_list_widget.dart';
 import 'package:flutter/material.dart';
 
 class PaintsPage extends StatefulWidget {
@@ -12,83 +9,10 @@ class PaintsPage extends StatefulWidget {
 }
 
 class _PaintsPageState extends State<PaintsPage> {
-  final ScrollController _scrollController = ScrollController();
-  @override
-  void initState() {
-    getPaints();
-    _scrollController.addListener(() {
-      if (!loading &&
-          searchInput == '' &&
-          _scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent) {
-        setState(() {
-          paintsPage += 1;
-          loading = true;
-        });
-        getPaints();
-      }
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
-
   String searchInput = '';
-  int paintsPage = 1;
+  int paintsCount = 0;
   bool loading = true;
   bool deliveryFreeSwitch = false;
-  DioClient dio = DioClient();
-  Paints paintsResponse = Paints();
-  List<Paint> paints = [];
-  List<Paint> paintsDeliveryFree = [];
-
-  List<Paint> getPaintsArray() {
-    return deliveryFreeSwitch ? paintsDeliveryFree : paints;
-  }
-
-  Future getPaints() async {
-    Response response;
-    try {
-      String endpoint = 'paint?page=$paintsPage&limit=20';
-      if (searchInput != '') {
-        paintsPage = 1;
-        endpoint = 'paint?page=1&limit=100&search=$searchInput';
-      }
-      response = await dio.getRequest(endpoint);
-      if (response.statusCode == 200) {
-        setState(() {
-          final res = {'items': response.data};
-          paintsResponse = Paints.fromJson(res);
-
-          if (searchInput != '') {
-            paints = paintsResponse.paints!;
-          } else {
-            paints.addAll(paintsResponse.paints!);
-            List<Paint> uniquePaints = [];
-            for (var paint in paints.reversed) {
-              final paintRepeated = uniquePaints
-                  .indexWhere((uniquePaint) => uniquePaint.id == paint.id);
-              if (paintRepeated == -1) {
-                uniquePaints.add(paint);
-              }
-            }
-            paints = uniquePaints;
-            paintsDeliveryFree =
-                paints.where((paint) => paint.deliveryFree == true).toList();
-          }
-        });
-      } else {
-        debugPrint('Response error ${response.statusCode}');
-      }
-    } on Exception catch (error) {
-      debugPrint('error $error');
-    }
-    loading = false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +50,7 @@ class _PaintsPageState extends State<PaintsPage> {
                 color: Colors.black,
               ),
               onChanged: (value) {
-                searchInput = value;
-                getPaints();
+                setState(() => searchInput = value);
               },
             ),
           ),
@@ -139,9 +62,7 @@ class _PaintsPageState extends State<PaintsPage> {
                   activeColor: const Color(0xFF5B4DA7),
                   value: deliveryFreeSwitch,
                   onChanged: (newValue) {
-                    setState(() {
-                      deliveryFreeSwitch = newValue;
-                    });
+                    setState(() => deliveryFreeSwitch = newValue);
                   },
                 ),
                 const Text.rich(
@@ -154,17 +75,17 @@ class _PaintsPageState extends State<PaintsPage> {
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                          text: 'entrega grátis',
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                          )),
-                      // can add more TextSpans here...
+                        text: 'entrega grátis',
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 const Spacer(),
                 Text(
-                  '${getPaintsArray().length} resultados',
+                  '$paintsCount resultados',
                   style: const TextStyle(
                     color: Color(0xFF707070),
                     fontSize: 14,
@@ -174,36 +95,17 @@ class _PaintsPageState extends State<PaintsPage> {
               ],
             ),
           ),
-          Expanded(
-            child: loading
-                ? const Center(child: CircularProgressIndicator())
-                : paints.isEmpty
-                    ? Container(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                        child: const Text(
-                          'Nenhum item foi encontrado.',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      )
-                    : ListView.builder(
-                        controller: _scrollController,
-                        itemCount: getPaintsArray().length,
-                        itemBuilder: ((context, index) {
-                          final paint = getPaintsArray()[index];
-                          return PaintWidget(
-                            paint: paint,
-                            index: index,
-                            callback: (value, index) {
-                              debugPrint(
-                                  'paint selected ${paint.name}, $index');
-                            },
-                          );
-                        }),
-                      ),
+          PaintsList(
+            searchInput: searchInput,
+            deliveryFreeSwitchInput: deliveryFreeSwitch,
+            callback: ((value, index) {
+              debugPrint('Selected paint ${value.name} of index $index');
+            }),
+            callbackCount: ((count) {
+              setState(() {
+                paintsCount = count;
+              });
+            }),
           ),
           Container(
             padding: const EdgeInsets.fromLTRB(0, 13, 13, 20),
