@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'response_classes.g.dart';
@@ -32,4 +35,42 @@ class UserRegister {
       _$UserRegisterFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserRegisterToJson(this);
+}
+
+@JsonSerializable()
+class Paint {
+  @JsonKey(name: 'name')
+  String? name;
+
+  @JsonKey(name: 'price')
+  String? price;
+
+  @JsonKey(name: 'deliveryFree')
+  bool? deliveryFree;
+
+  @JsonKey(name: 'coverImage')
+  String? coverImage;
+
+  @JsonKey(name: 'description')
+  String? description;
+
+  @JsonKey(name: 'id')
+  String? id;
+
+  Paint();
+
+  factory Paint.fromJson(Map<String, dynamic> json) => _$PaintFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PaintToJson(this);
+}
+
+@JsonSerializable()
+class Paints {
+  @JsonKey(name: 'items')
+  List<Paint>? paints;
+
+  Paints();
+
+  factory Paints.fromJson(Map<String, dynamic> json) => _$PaintsFromJson(json);
+  Map<String, dynamic> toJson() => _$PaintsToJson(this);
 }
