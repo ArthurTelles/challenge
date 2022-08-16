@@ -39,7 +39,8 @@ class _PaintsListState extends State<PaintsList> {
   @override
   void didUpdateWidget(PaintsList oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.searchInput != oldWidget.searchInput) {
+    if (widget.searchInput != oldWidget.searchInput ||
+        widget.deliveryFreeSwitchInput != oldWidget.deliveryFreeSwitchInput) {
       search = widget.searchInput;
       getPaints();
     }
