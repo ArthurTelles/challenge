@@ -74,3 +74,64 @@ class Paints {
   factory Paints.fromJson(Map<String, dynamic> json) => _$PaintsFromJson(json);
   Map<String, dynamic> toJson() => _$PaintsToJson(this);
 }
+
+@JsonSerializable()
+class PaintDifferential {
+  @JsonKey(name: 'id')
+  String? id;
+
+  @JsonKey(name: 'name')
+  String? name;
+
+  @JsonKey(name: 'paintId')
+  String? paintId;
+
+  PaintDifferential();
+
+  factory PaintDifferential.fromJson(Map<String, dynamic> json) =>
+      _$PaintDifferentialFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PaintDifferentialToJson(this);
+}
+
+@JsonSerializable()
+class PaintDifferentials {
+  @JsonKey(name: 'items')
+  List<PaintDifferential>? differentials;
+
+  PaintDifferentials();
+
+  factory PaintDifferentials.fromJson(Map<String, dynamic> json) =>
+      _$PaintDifferentialsFromJson(json);
+  Map<String, dynamic> toJson() => _$PaintDifferentialsToJson(this);
+}
+
+@JsonSerializable()
+class PaintImage {
+  @JsonKey(name: 'id')
+  String? id;
+
+  @JsonKey(name: 'paintId')
+  String? paintId;
+
+  @JsonKey(name: 'image')
+  String? image;
+
+  PaintImage();
+
+  factory PaintImage.fromJson(Map<String, dynamic> json) =>
+      _$PaintImageFromJson(json);
+  Map<String, dynamic> toJson() => _$PaintImageToJson(this);
+}
+
+@JsonSerializable()
+class PaintImages {
+  @JsonKey(name: 'items')
+  List<PaintImage>? images;
+
+  PaintImages();
+
+  factory PaintImages.fromJson(Map<String, dynamic> json) =>
+      _$PaintImagesFromJson(json);
+  Map<String, dynamic> toJson() => _$PaintImagesToJson(this);
+}

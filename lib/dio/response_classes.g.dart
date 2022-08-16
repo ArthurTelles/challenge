@@ -50,3 +50,49 @@ Paints _$PaintsFromJson(Map<String, dynamic> json) => Paints()
 Map<String, dynamic> _$PaintsToJson(Paints instance) => <String, dynamic>{
       'items': instance.paints,
     };
+
+PaintDifferential _$PaintDifferentialFromJson(Map<String, dynamic> json) =>
+    PaintDifferential()
+      ..id = json['id'] as String?
+      ..name = json['name'] as String?
+      ..paintId = json['paintId'] as String?;
+
+Map<String, dynamic> _$PaintDifferentialToJson(PaintDifferential instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'paintId': instance.paintId,
+    };
+
+PaintDifferentials _$PaintDifferentialsFromJson(Map<String, dynamic> json) =>
+    PaintDifferentials()
+      ..differentials = (json['items'] as List<dynamic>?)
+          ?.map((e) => PaintDifferential.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+Map<String, dynamic> _$PaintDifferentialsToJson(PaintDifferentials instance) =>
+    <String, dynamic>{
+      'items': instance.differentials,
+    };
+
+PaintImage _$PaintImageFromJson(Map<String, dynamic> json) => PaintImage()
+  ..id = json['id'] as String?
+  ..paintId = json['paintId'] as String?
+  ..image = json['image'] as String?;
+
+Map<String, dynamic> _$PaintImageToJson(PaintImage instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'paintId': instance.paintId,
+      'image': instance.image,
+    };
+
+PaintImages _$PaintImagesFromJson(Map<String, dynamic> json) => PaintImages()
+  ..images = (json['items'] as List<dynamic>?)
+      ?.map((e) => PaintImage.fromJson(e as Map<String, dynamic>))
+      .toList();
+
+Map<String, dynamic> _$PaintImagesToJson(PaintImages instance) =>
+    <String, dynamic>{
+      'items': instance.images,
+    };

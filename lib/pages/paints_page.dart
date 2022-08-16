@@ -1,3 +1,4 @@
+import 'package:challenge/widgets/paint_info_widget.dart';
 import 'package:challenge/widgets/paint_list_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -13,100 +14,125 @@ class _PaintsPageState extends State<PaintsPage> {
   int paintsCount = 0;
   bool loading = true;
   bool deliveryFreeSwitch = false;
+  int selectedPaintIndex = -1;
+  List<dynamic> currentPaints = [];
+
+  bool hasPaintSelected() => selectedPaintIndex != -1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        title: const Text(
+          'Opções de tintas',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: hasPaintSelected()
+            ? IconButton(
+                onPressed: () {
+                  setState(() => selectedPaintIndex = -1);
+                },
+                icon: const Icon(Icons.arrow_back_ios),
+                color: Colors.black,
+              )
+            : null,
+      ),
       body: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(0, 44, 0, 24),
-            child: const Text(
-              'Opções de tintas',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: TextFormField(
-              cursorColor: Colors.black,
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color.fromARGB(102, 255, 255, 255),
-                hintText: 'Buscar...',
-                contentPadding: EdgeInsets.all(16.0),
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  borderSide:
-                      BorderSide(color: Color.fromARGB(1, 164, 164, 164)),
-                ),
-              ),
-              style: const TextStyle(
-                color: Colors.black,
-              ),
-              onChanged: (value) {
-                setState(() => searchInput = value);
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(14, 0, 24, 0),
-            child: Row(
-              children: [
-                Switch(
-                  activeColor: const Color(0xFF5B4DA7),
-                  value: deliveryFreeSwitch,
-                  onChanged: (newValue) {
-                    setState(() => deliveryFreeSwitch = newValue);
-                  },
-                ),
-                const Text.rich(
-                  TextSpan(
-                    text: 'Apenas ',
-                    style: TextStyle(
-                      color: Color(0xFF707070),
-                      fontSize: 16,
-                      fontWeight: FontWeight.normal,
+          hasPaintSelected()
+              ? const SizedBox.shrink()
+              : Container(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                  child: TextFormField(
+                    cursorColor: Colors.black,
+                    decoration: const InputDecoration(
+                      filled: true,
+                      fillColor: Color.fromARGB(102, 255, 255, 255),
+                      hintText: 'Buscar...',
+                      contentPadding: EdgeInsets.all(16.0),
+                      prefixIcon: Icon(Icons.search),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        borderSide:
+                            BorderSide(color: Color.fromARGB(1, 164, 164, 164)),
+                      ),
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'entrega grátis',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
+                    style: const TextStyle(
+                      color: Colors.black,
+                    ),
+                    onChanged: (value) {
+                      setState(() => searchInput = value);
+                    },
+                  ),
+                ),
+          hasPaintSelected()
+              ? const SizedBox.shrink()
+              : Container(
+                  padding: const EdgeInsets.fromLTRB(14, 0, 24, 0),
+                  child: Row(
+                    children: [
+                      Switch(
+                        activeColor: const Color(0xFF5B4DA7),
+                        value: deliveryFreeSwitch,
+                        onChanged: (newValue) {
+                          setState(() => deliveryFreeSwitch = newValue);
+                        },
+                      ),
+                      const Text.rich(
+                        TextSpan(
+                          text: 'Apenas ',
+                          style: TextStyle(
+                            color: Color(0xFF707070),
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: 'entrega grátis',
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '$paintsCount resultados',
+                        style: const TextStyle(
+                          color: Color(0xFF707070),
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const Spacer(),
-                Text(
-                  '$paintsCount resultados',
-                  style: const TextStyle(
-                    color: Color(0xFF707070),
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                  ),
+          hasPaintSelected()
+              ? PaintInfo(
+                  paintId: currentPaints[selectedPaintIndex].id,
+                  paintName: currentPaints[selectedPaintIndex].name,
+                )
+              : PaintsList(
+                  searchInput: searchInput,
+                  deliveryFreeSwitchInput: deliveryFreeSwitch,
+                  callbackSelected: ((paints, index) {
+                    debugPrint('Selected paint index: $index');
+                    setState(() {
+                      currentPaints = paints;
+                      selectedPaintIndex = index;
+                    });
+                  }),
+                  callbackCount: ((count) {
+                    setState(() => paintsCount = count);
+                  }),
                 ),
-              ],
-            ),
-          ),
-          PaintsList(
-            searchInput: searchInput,
-            deliveryFreeSwitchInput: deliveryFreeSwitch,
-            callback: ((value, index) {
-              debugPrint('Selected paint ${value.name} of index $index');
-            }),
-            callbackCount: ((count) {
-              setState(() {
-                paintsCount = count;
-              });
-            }),
-          ),
           Container(
             padding: const EdgeInsets.fromLTRB(0, 13, 13, 20),
             decoration: BoxDecoration(
@@ -132,6 +158,7 @@ class _PaintsPageState extends State<PaintsPage> {
                 GestureDetector(
                   onTap: () {
                     debugPrint('tap store');
+                    setState(() => selectedPaintIndex = -1);
                   },
                   child: Column(
                     children: const [

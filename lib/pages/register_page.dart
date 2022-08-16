@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:challenge/classes/data_classes.dart';
+import 'package:challenge/classes/sign_classes.dart';
 import 'package:challenge/dio/dio_client.dart';
 import 'package:challenge/dio/response_classes.dart';
 import 'package:challenge/pages/paints_page.dart';

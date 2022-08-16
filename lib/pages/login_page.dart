@@ -1,4 +1,4 @@
-import 'package:challenge/classes/data_classes.dart';
+import 'package:challenge/classes/sign_classes.dart';
 import 'package:challenge/dio/dio_client.dart';
 import 'package:challenge/dio/response_classes.dart';
 import 'package:challenge/pages/paints_page.dart';
@@ -127,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                 onPressed: () {
-                  if (loginData.email == '' || loginData.password == '') {
+                  if (loginData.email.isEmpty || loginData.password.isEmpty) {
                     const snackBar = SnackBar(
                       content:
                           Text('Email ou Password inválido, tente novamente.'),
