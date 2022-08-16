@@ -24,7 +24,7 @@ class _PaintsPageState extends State<PaintsPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFF2F2F2),
         title: const Text(
           'Opções de tintas',
           style: TextStyle(
@@ -43,6 +43,7 @@ class _PaintsPageState extends State<PaintsPage> {
               )
             : null,
       ),
+      backgroundColor: const Color(0xFFF2F2F2),
       body: Column(
         children: [
           hasPaintSelected()
