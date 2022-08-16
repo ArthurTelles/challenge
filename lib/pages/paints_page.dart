@@ -1,5 +1,6 @@
 import 'package:challenge/widgets/paint_info_widget.dart';
 import 'package:challenge/widgets/paint_list_widget.dart';
+import 'package:challenge/widgets/profile_info_widget.dart';
 import 'package:flutter/material.dart';
 
 class PaintsPage extends StatefulWidget {
@@ -16,8 +17,25 @@ class _PaintsPageState extends State<PaintsPage> {
   bool deliveryFreeSwitch = false;
   int selectedPaintIndex = -1;
   List<dynamic> currentPaints = [];
+  int currentPage = 0;
 
+  bool showBackButton() => selectedPaintIndex != -1 && currentPage == 0;
   bool hasPaintSelected() => selectedPaintIndex != -1;
+  String getPageTitle() {
+    switch (currentPage) {
+      case 0:
+        return 'Opções de tintas';
+
+      case 1:
+        return 'Carrinho';
+
+      case 2:
+        return 'Perfil';
+
+      default:
+        return 'Opções de tintas';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,15 +43,15 @@ class _PaintsPageState extends State<PaintsPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: const Color(0xFFF2F2F2),
-        title: const Text(
-          'Opções de tintas',
-          style: TextStyle(
+        title: Text(
+          getPageTitle(),
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 26,
             fontWeight: FontWeight.bold,
           ),
         ),
-        leading: hasPaintSelected()
+        leading: showBackButton()
             ? IconButton(
                 onPressed: () {
                   setState(() => selectedPaintIndex = -1);
@@ -46,94 +64,98 @@ class _PaintsPageState extends State<PaintsPage> {
       backgroundColor: const Color(0xFFF2F2F2),
       body: Column(
         children: [
-          hasPaintSelected()
-              ? const SizedBox.shrink()
-              : Container(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                  child: TextFormField(
-                    cursorColor: Colors.black,
-                    decoration: const InputDecoration(
-                      filled: true,
-                      fillColor: Color.fromARGB(102, 255, 255, 255),
-                      hintText: 'Buscar...',
-                      contentPadding: EdgeInsets.all(16.0),
-                      prefixIcon: Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        borderSide:
-                            BorderSide(color: Color.fromARGB(1, 164, 164, 164)),
+          if (currentPage == 2) const ProfileInfo(),
+          if (currentPage == 0)
+            hasPaintSelected()
+                ? const SizedBox.shrink()
+                : Container(
+                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+                    child: TextFormField(
+                      cursorColor: Colors.black,
+                      decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(102, 255, 255, 255),
+                        hintText: 'Buscar...',
+                        contentPadding: EdgeInsets.all(16.0),
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(1, 164, 164, 164)),
+                        ),
                       ),
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                      onChanged: (value) {
+                        setState(() => searchInput = value);
+                      },
                     ),
-                    style: const TextStyle(
-                      color: Colors.black,
-                    ),
-                    onChanged: (value) {
-                      setState(() => searchInput = value);
-                    },
                   ),
-                ),
-          hasPaintSelected()
-              ? const SizedBox.shrink()
-              : Container(
-                  padding: const EdgeInsets.fromLTRB(14, 0, 24, 0),
-                  child: Row(
-                    children: [
-                      Switch(
-                        activeColor: const Color(0xFF5B4DA7),
-                        value: deliveryFreeSwitch,
-                        onChanged: (newValue) {
-                          setState(() => deliveryFreeSwitch = newValue);
-                        },
-                      ),
-                      const Text.rich(
-                        TextSpan(
-                          text: 'Apenas ',
-                          style: TextStyle(
+          if (currentPage == 0)
+            currentPage == 0 && hasPaintSelected()
+                ? const SizedBox.shrink()
+                : Container(
+                    padding: const EdgeInsets.fromLTRB(14, 0, 24, 0),
+                    child: Row(
+                      children: [
+                        Switch(
+                          activeColor: const Color(0xFF5B4DA7),
+                          value: deliveryFreeSwitch,
+                          onChanged: (newValue) {
+                            setState(() => deliveryFreeSwitch = newValue);
+                          },
+                        ),
+                        const Text.rich(
+                          TextSpan(
+                            text: 'Apenas ',
+                            style: TextStyle(
+                              color: Color(0xFF707070),
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'entrega grátis',
+                                style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          '$paintsCount resultados',
+                          style: const TextStyle(
                             color: Color(0xFF707070),
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.normal,
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'entrega grátis',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '$paintsCount resultados',
-                        style: const TextStyle(
-                          color: Color(0xFF707070),
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-          hasPaintSelected()
-              ? PaintInfo(
-                  paintId: currentPaints[selectedPaintIndex].id,
-                  paintName: currentPaints[selectedPaintIndex].name,
-                )
-              : PaintsList(
-                  searchInput: searchInput,
-                  deliveryFreeSwitchInput: deliveryFreeSwitch,
-                  callbackSelected: ((paints, index) {
-                    debugPrint('Selected paint index: $index');
-                    setState(() {
-                      currentPaints = paints;
-                      selectedPaintIndex = index;
-                    });
-                  }),
-                  callbackCount: ((count) {
-                    setState(() => paintsCount = count);
-                  }),
-                ),
+          if (currentPage == 0)
+            currentPage == 0 && hasPaintSelected()
+                ? PaintInfo(
+                    paintId: currentPaints[selectedPaintIndex].id,
+                    paintName: currentPaints[selectedPaintIndex].name,
+                  )
+                : PaintsList(
+                    searchInput: searchInput,
+                    deliveryFreeSwitchInput: deliveryFreeSwitch,
+                    callbackSelected: ((paints, index) {
+                      debugPrint('Selected paint index: $index');
+                      setState(() {
+                        currentPaints = paints;
+                        selectedPaintIndex = index;
+                      });
+                    }),
+                    callbackCount: ((count) {
+                      setState(() => paintsCount = count);
+                    }),
+                  ),
           Container(
             padding: const EdgeInsets.fromLTRB(0, 13, 13, 20),
             decoration: BoxDecoration(
@@ -159,21 +181,28 @@ class _PaintsPageState extends State<PaintsPage> {
                 GestureDetector(
                   onTap: () {
                     debugPrint('tap store');
-                    setState(() => selectedPaintIndex = -1);
+                    setState(() {
+                      currentPage = 0;
+                      selectedPaintIndex = -1;
+                    });
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Icon(
-                        color: Color(0xFF5B4DA7),
-                        size: 35,
                         Icons.storefront_outlined,
+                        size: 35,
+                        color: currentPage == 0
+                            ? const Color(0xFF5B4DA7)
+                            : Colors.grey,
                       ),
                       Text(
                         'Loja',
                         style: TextStyle(
-                          color: Color(0xFF5B4DA7),
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
+                          color: currentPage == 0
+                              ? const Color(0xFF5B4DA7)
+                              : Colors.grey,
                         ),
                       ),
                     ],
@@ -182,20 +211,27 @@ class _PaintsPageState extends State<PaintsPage> {
                 GestureDetector(
                   onTap: () {
                     debugPrint('tap cart');
+                    setState(() {
+                      currentPage = 1;
+                    });
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Icon(
-                        color: Colors.grey,
-                        size: 35,
                         Icons.shopping_cart_outlined,
+                        size: 35,
+                        color: currentPage == 1
+                            ? const Color(0xFF5B4DA7)
+                            : Colors.grey,
                       ),
                       Text(
                         'Carrinho',
                         style: TextStyle(
-                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
+                          color: currentPage == 1
+                              ? const Color(0xFF5B4DA7)
+                              : Colors.grey,
                         ),
                       ),
                     ],
@@ -204,20 +240,27 @@ class _PaintsPageState extends State<PaintsPage> {
                 GestureDetector(
                   onTap: () {
                     debugPrint('tap profile');
+                    setState(() {
+                      currentPage = 2;
+                    });
                   },
                   child: Column(
-                    children: const [
+                    children: [
                       Icon(
-                        color: Colors.grey,
-                        size: 35,
                         Icons.person_outline_rounded,
+                        size: 35,
+                        color: currentPage == 2
+                            ? const Color(0xFF5B4DA7)
+                            : Colors.grey,
                       ),
                       Text(
                         'Perfil',
                         style: TextStyle(
-                          color: Colors.grey,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
+                          color: currentPage == 2
+                              ? const Color(0xFF5B4DA7)
+                              : Colors.grey,
                         ),
                       ),
                     ],
