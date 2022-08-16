@@ -1,3 +1,4 @@
+import 'package:challenge/pages/how_to_paint_page.dart';
 import 'package:flutter/material.dart';
 
 class PaintActionButtons extends StatelessWidget {
@@ -16,6 +17,13 @@ class PaintActionButtons extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               debugPrint('How to paint');
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return HowToPaint();
+                  },
+                ),
+              );
             },
             child: Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 4, 0),

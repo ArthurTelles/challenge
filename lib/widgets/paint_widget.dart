@@ -25,6 +25,7 @@ class PaintWidget extends StatelessWidget {
         margin: const EdgeInsets.fromLTRB(20, 6, 20, 6),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
+          color: Colors.white,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: const Color(0x40404026)),
         ),
@@ -83,7 +84,6 @@ class PaintWidget extends StatelessWidget {
                                   style: const TextStyle(
                                     fontSize: 22,
                                   )),
-                              // can add more TextSpans here...
                             ],
                           ),
                         ),
