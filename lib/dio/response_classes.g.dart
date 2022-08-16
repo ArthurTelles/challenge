@@ -96,3 +96,16 @@ Map<String, dynamic> _$PaintImagesToJson(PaintImages instance) =>
     <String, dynamic>{
       'items': instance.images,
     };
+
+ProfileInfoRequest _$ProfileInfoRequestFromJson(Map<String, dynamic> json) =>
+    ProfileInfoRequest()
+      ..name = json['name'] as String?
+      ..email = json['email'] as String?
+      ..avatar = json['avatar'] as String?;
+
+Map<String, dynamic> _$ProfileInfoRequestToJson(ProfileInfoRequest instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'email': instance.email,
+      'avatar': instance.avatar,
+    };

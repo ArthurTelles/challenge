@@ -135,3 +135,21 @@ class PaintImages {
       _$PaintImagesFromJson(json);
   Map<String, dynamic> toJson() => _$PaintImagesToJson(this);
 }
+
+@JsonSerializable()
+class ProfileInfoRequest {
+  @JsonKey(name: 'name')
+  String? name;
+
+  @JsonKey(name: 'email')
+  String? email;
+
+  @JsonKey(name: 'avatar')
+  String? avatar;
+
+  ProfileInfoRequest();
+
+  factory ProfileInfoRequest.fromJson(Map<String, dynamic> json) =>
+      _$ProfileInfoRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$ProfileInfoRequestToJson(this);
+}
