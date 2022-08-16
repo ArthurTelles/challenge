@@ -33,8 +33,23 @@ class PaintWidget extends StatelessWidget {
             Container(
               margin: const EdgeInsets.fromLTRB(0, 0, 20, 0),
               child: Image.network(
-                '${paint.coverImage!}?random=$index', //This was added to select multiple random images to give the impression of multiple itens
+                '${paint.coverImage!}?random=$index', //This was added to select multiple random images to give the impression of multiple items
                 width: 51,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent? loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  }
+                },
               ),
             ),
             Expanded(

@@ -60,21 +60,3 @@ class RegisterData {
         'password': password,
       };
 }
-
-class PaintsData {
-  String id;
-  String name;
-  String price;
-  bool deliveryFree;
-  String coverImage;
-  String description;
-
-  PaintsData(
-    this.id,
-    this.name,
-    this.price,
-    this.deliveryFree,
-    this.coverImage,
-    this.description,
-  );
-}

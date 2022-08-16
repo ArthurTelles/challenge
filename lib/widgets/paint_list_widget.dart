@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:challenge/dio/response_classes.dart';
 
-typedef Callback = void Function(Paint value, int index);
+typedef CallbackSelected = void Function(List<Paint> paints, int index);
 typedef CallbackCont = void Function(int count);
 
 class PaintsList extends StatefulWidget {
@@ -12,13 +12,13 @@ class PaintsList extends StatefulWidget {
     Key? key,
     required this.searchInput,
     required this.deliveryFreeSwitchInput,
-    required this.callback,
     required this.callbackCount,
+    required this.callbackSelected,
   }) : super(key: key);
 
   final String searchInput;
   final bool deliveryFreeSwitchInput;
-  final Callback callback;
+  final CallbackSelected callbackSelected;
   final CallbackCont callbackCount;
 
   @override
@@ -51,7 +51,7 @@ class _PaintsListState extends State<PaintsList> {
     getPaints();
     _scrollController.addListener(() {
       if (!loading &&
-          search == '' &&
+          search.isEmpty &&
           _scrollController.position.pixels >=
               _scrollController.position.maxScrollExtent) {
         setState(() {
@@ -142,7 +142,7 @@ class _PaintsListState extends State<PaintsList> {
                       index: index,
                       callback: (value, index) {
                         debugPrint('paint selected ${value.name}, $index');
-                        widget.callback(value, index);
+                        widget.callbackSelected(getPaintsArray(), index);
                       },
                     );
                   }),
