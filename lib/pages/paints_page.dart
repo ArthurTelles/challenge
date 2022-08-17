@@ -1,4 +1,5 @@
 import 'package:challenge/widgets/navigation_bar_widget.dart';
+import 'package:challenge/widgets/paint_cart_widget.dart';
 import 'package:challenge/widgets/paint_info_widget.dart';
 import 'package:challenge/widgets/paint_list_widget.dart';
 import 'package:challenge/widgets/paint_search_bar_widget.dart';
@@ -67,6 +68,7 @@ class _PaintsPageState extends State<PaintsPage> {
       body: Column(
         children: [
           if (currentPage == 2) const ProfileInfo(),
+          if (currentPage == 1) const PaintCart(),
           if (currentPage == 0 && !hasPaintSelected())
             PaintSearchBar(
               paintsCount: paintsCount,
@@ -78,26 +80,26 @@ class _PaintsPageState extends State<PaintsPage> {
                 });
               },
             ),
-          if (currentPage == 0)
-            currentPage == 0 && hasPaintSelected()
-                ? PaintInfo(
-                    paintId: currentPaints[selectedPaintIndex].id,
-                    paintName: currentPaints[selectedPaintIndex].name,
-                  )
-                : PaintsList(
-                    searchInput: searchInput,
-                    deliveryFreeSwitchInput: deliveryFreeSwitch,
-                    callbackSelected: ((paints, index) {
-                      debugPrint('Selected paint index: $index');
-                      setState(() {
-                        currentPaints = paints;
-                        selectedPaintIndex = index;
-                      });
-                    }),
-                    callbackCount: ((count) {
-                      setState(() => paintsCount = count);
-                    }),
-                  ),
+          if (currentPage == 0 && hasPaintSelected())
+            PaintInfo(
+              paintId: currentPaints[selectedPaintIndex].id,
+              paintName: currentPaints[selectedPaintIndex].name,
+            ),
+          if (currentPage == 0 && !hasPaintSelected())
+            PaintsList(
+              searchInput: searchInput,
+              deliveryFreeSwitchInput: deliveryFreeSwitch,
+              callbackSelected: ((paints, index) {
+                debugPrint('Selected paint index: $index');
+                setState(() {
+                  currentPaints = paints;
+                  selectedPaintIndex = index;
+                });
+              }),
+              callbackCount: ((count) {
+                setState(() => paintsCount = count);
+              }),
+            ),
           CustomNavigationBar(
             onTap: (selection) {
               setState(() {

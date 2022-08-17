@@ -44,6 +44,39 @@ class DioClient {
     return response;
   }
 
+  Future<Response> putRequest(String endPoint, String? data) async {
+    Response response;
+    try {
+      response = await _dio.put(
+        endPoint,
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+        data: data,
+      );
+    } on DioError catch (error) {
+      print(error.message);
+      throw Exception(error.message);
+    }
+    return response;
+  }
+
+  Future<Response> deleteRequest(String endPoint) async {
+    Response response;
+    try {
+      response = await _dio.delete(
+        endPoint,
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (error) {
+      print(error.message);
+      throw Exception(error.message);
+    }
+    return response;
+  }
+
   initializeInterceptors() {
     _dio.interceptors.add(InterceptorsWrapper(
       onError: (error, handler) {

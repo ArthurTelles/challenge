@@ -153,3 +153,33 @@ class ProfileInfoRequest {
       _$ProfileInfoRequestFromJson(json);
   Map<String, dynamic> toJson() => _$ProfileInfoRequestToJson(this);
 }
+
+@JsonSerializable()
+class CartInfoRequest {
+  @JsonKey(name: 'items')
+  List<CartInfo>? items;
+
+  CartInfoRequest();
+
+  factory CartInfoRequest.fromJson(Map<String, dynamic> json) =>
+      _$CartInfoRequestFromJson(json);
+  Map<String, dynamic> toJson() => _$CartInfoRequestToJson(this);
+}
+
+@JsonSerializable()
+class CartInfo {
+  @JsonKey(name: 'id')
+  String? id;
+
+  @JsonKey(name: 'quantity')
+  int? quantity;
+
+  @JsonKey(name: 'paint')
+  Paint? paint;
+
+  CartInfo();
+
+  factory CartInfo.fromJson(Map<String, dynamic> json) =>
+      _$CartInfoFromJson(json);
+  Map<String, dynamic> toJson() => _$CartInfoToJson(this);
+}

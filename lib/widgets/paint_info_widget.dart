@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:challenge/dio/dio_client.dart';
 import 'package:challenge/dio/response_classes.dart';
 import 'package:challenge/widgets/paint_action_buttons_widget.dart';
@@ -22,11 +24,15 @@ class PaintInfo extends StatefulWidget {
 
 class _PaintInfoState extends State<PaintInfo> {
   bool loading = true;
+  bool loadingCart = false;
   PaintDifferentials paintDifferentialsResponse = PaintDifferentials();
   List<PaintDifferential> paintDifferentials = [];
   PaintImages paintImagesResponse = PaintImages();
   List<PaintImage> paintImages = [];
   int paintImageIndex = 0;
+  Paint paintInfo = Paint();
+  CartInfoRequest cartInfoRequest = CartInfoRequest();
+  List<CartInfo> cartInfos = [];
   DioClient dio = DioClient();
 
   @override
@@ -60,6 +66,37 @@ class _PaintInfoState extends State<PaintInfo> {
       debugPrint('error $error');
     }
     loading = false;
+  }
+
+  Future updateCart() async {
+    Response paintResponse, cartResponse;
+    try {
+      //Get cart to check if paint is already added
+      cartResponse = await dio.getRequest('cart');
+      final res = {'items': cartResponse.data};
+      cartInfoRequest = CartInfoRequest.fromJson(res);
+      final hasPaint = cartInfoRequest.items!
+          .where((cartInfo) => cartInfo.paint?.id == widget.paintId);
+
+      //If the paint is not in the cart request it's full info and add it
+      if (hasPaint.isEmpty) {
+        paintResponse = await dio.getRequest('paint/${widget.paintId}');
+        paintInfo = Paint.fromJson(paintResponse.data);
+        if (paintResponse.statusCode == 200) {
+          final body = {"quantity": 1, "paint": paintInfo};
+          await dio.postRequest('cart', jsonEncode(body));
+        } else {
+          debugPrint('Response error ${paintResponse.statusCode}');
+        }
+      } else {
+        //If the paint is already in the cart just update the quantity
+        final body = {"quantity": (hasPaint.first.quantity! + 1)};
+        await dio.putRequest('cart/${hasPaint.first.id}', jsonEncode(body));
+      }
+    } on Exception catch (error) {
+      debugPrint('error $error');
+    }
+    setState(() => loadingCart = false);
   }
 
   @override
@@ -104,6 +141,8 @@ class _PaintInfoState extends State<PaintInfo> {
                     GestureDetector(
                       onTap: (() {
                         debugPrint('Add to cart');
+                        setState(() => loadingCart = true);
+                        updateCart();
                       }),
                       child: Container(
                         margin: const EdgeInsets.fromLTRB(0, 26, 0, 26),
@@ -112,14 +151,18 @@ class _PaintInfoState extends State<PaintInfo> {
                           borderRadius: BorderRadius.all(Radius.circular(50)),
                           color: Color(0xFF5B4DA7),
                         ),
-                        child: const Text(
-                          'Adicionar ao carrinho',
-                          style: TextStyle(
-                            fontSize: 19,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: loadingCart
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text(
+                                'Adicionar ao carrinho',
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     )
                   ],

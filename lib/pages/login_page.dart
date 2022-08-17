@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool loading = false;
   String accessToken = '';
-  var loginData = LoginData('', '');
+  LoginData loginData = LoginData('', '');
 
   DioClient dio = DioClient();
   UserLogin userLogin = UserLogin();
