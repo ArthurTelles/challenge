@@ -9,15 +9,19 @@ import 'package:challenge/widgets/paint_image_carousel_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+typedef Callback = void Function();
+
 class PaintInfo extends StatefulWidget {
   const PaintInfo({
     Key? key,
     required this.paintId,
     required this.paintName,
+    required this.goToCart,
   }) : super(key: key);
 
   final String paintId;
   final String paintName;
+  final Callback goToCart;
 
   @override
   State<PaintInfo> createState() => _PaintInfoState();
@@ -97,6 +101,7 @@ class _PaintInfoState extends State<PaintInfo> {
         final body = {"quantity": (hasPaint.first.quantity! + 1)};
         await dio.putRequest('cart/${hasPaint.first.id}', jsonEncode(body));
       }
+      widget.goToCart();
     } on Exception catch (error) {
       debugPrint('error $error');
     }

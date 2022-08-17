@@ -24,6 +24,22 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     widget.onTap(currentSelection);
   }
 
+  //Function used to monitor changes from the father
+  @override
+  void didUpdateWidget(CustomNavigationBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.currentPage != oldWidget.currentPage) {
+      currentSelection = widget.currentPage;
+    }
+  }
+
+  //Function initializes the currentSelection value
+  @override
+  void initState() {
+    currentSelection = widget.currentPage;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
