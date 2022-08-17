@@ -33,13 +33,10 @@ class _PaintsPageState extends State<PaintsPage> {
     switch (currentPage) {
       case 0:
         return 'Opções de tintas';
-
       case 1:
         return 'Carrinho';
-
       case 2:
         return 'Perfil';
-
       default:
         return 'Opções de tintas';
     }
@@ -51,6 +48,7 @@ class _PaintsPageState extends State<PaintsPage> {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: const Color(0xFFF2F2F2),
+        centerTitle: true,
         title: Text(
           getPageTitle(),
           style: const TextStyle(

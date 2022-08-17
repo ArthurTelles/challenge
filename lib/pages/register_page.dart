@@ -58,9 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-      ),
+      appBar: AppBar(elevation: 0.0),
       backgroundColor: const Color(0xFF5B4DA7),
       body: SingleChildScrollView(
         child: Center(
