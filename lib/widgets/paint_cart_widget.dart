@@ -84,6 +84,12 @@ class _PaintCartState extends State<PaintCart> {
     return items;
   }
 
+  //Function that returns the total amount of the paint
+  String totalPrice(String price, int quantity) {
+    var unityPrice = double.parse(price);
+    return (unityPrice * quantity).toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -205,7 +211,7 @@ class _PaintCartState extends State<PaintCart> {
                                           ),
                                         ),
                                         Text(
-                                          'R\$ ${paintInfo.paint?.price}'
+                                          'R\$ ${totalPrice(paintInfo.paint!.price!, paintInfo.quantity!)}'
                                               .replaceFirst(RegExp('\\.'), ','),
                                           style: const TextStyle(
                                             color: Colors.black,

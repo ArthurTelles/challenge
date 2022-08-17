@@ -87,6 +87,9 @@ class _PaintsPageState extends State<PaintsPage> {
             PaintInfo(
               paintId: currentPaints[selectedPaintIndex].id,
               paintName: currentPaints[selectedPaintIndex].name,
+              goToCart: () {
+                setState(() => currentPage = 1);
+              },
             ),
           if (currentPage == 0 && !hasPaintSelected())
             PaintsList(
