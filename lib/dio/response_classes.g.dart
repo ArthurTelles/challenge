@@ -109,3 +109,27 @@ Map<String, dynamic> _$ProfileInfoRequestToJson(ProfileInfoRequest instance) =>
       'email': instance.email,
       'avatar': instance.avatar,
     };
+
+CartInfoRequest _$CartInfoRequestFromJson(Map<String, dynamic> json) =>
+    CartInfoRequest()
+      ..items = (json['items'] as List<dynamic>?)
+          ?.map((e) => CartInfo.fromJson(e as Map<String, dynamic>))
+          .toList();
+
+Map<String, dynamic> _$CartInfoRequestToJson(CartInfoRequest instance) =>
+    <String, dynamic>{
+      'items': instance.items,
+    };
+
+CartInfo _$CartInfoFromJson(Map<String, dynamic> json) => CartInfo()
+  ..id = json['id'] as String?
+  ..quantity = json['quantity'] as int?
+  ..paint = json['paint'] == null
+      ? null
+      : Paint.fromJson(json['paint'] as Map<String, dynamic>);
+
+Map<String, dynamic> _$CartInfoToJson(CartInfo instance) => <String, dynamic>{
+      'id': instance.id,
+      'quantity': instance.quantity,
+      'paint': instance.paint,
+    };

@@ -16,7 +16,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   bool loading = false;
-  var registerData = RegisterData('', '', '', '');
+  RegisterData registerData = RegisterData('', '', '', '');
 
   bool validEntry() {
     return registerData.name != '' &&

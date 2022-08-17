@@ -19,7 +19,7 @@ class CustomFormWidget extends StatefulWidget {
 }
 
 class _CustomFormWidgetState extends State<CustomFormWidget> {
-  var formData = FormData("", false);
+  FormData formData = FormData("", false);
 
   @override
   Widget build(BuildContext context) {
