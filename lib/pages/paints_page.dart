@@ -1,5 +1,7 @@
+import 'package:challenge/widgets/navigation_bar_widget.dart';
 import 'package:challenge/widgets/paint_info_widget.dart';
 import 'package:challenge/widgets/paint_list_widget.dart';
+import 'package:challenge/widgets/paint_search_bar_widget.dart';
 import 'package:challenge/widgets/profile_info_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -65,77 +67,17 @@ class _PaintsPageState extends State<PaintsPage> {
       body: Column(
         children: [
           if (currentPage == 2) const ProfileInfo(),
-          if (currentPage == 0)
-            hasPaintSelected()
-                ? const SizedBox.shrink()
-                : Container(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                    child: TextFormField(
-                      cursorColor: Colors.black,
-                      decoration: const InputDecoration(
-                        filled: true,
-                        fillColor: Color.fromARGB(102, 255, 255, 255),
-                        hintText: 'Buscar...',
-                        contentPadding: EdgeInsets.all(16.0),
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          borderSide: BorderSide(
-                              color: Color.fromARGB(1, 164, 164, 164)),
-                        ),
-                      ),
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
-                      onChanged: (value) {
-                        setState(() => searchInput = value);
-                      },
-                    ),
-                  ),
-          if (currentPage == 0)
-            currentPage == 0 && hasPaintSelected()
-                ? const SizedBox.shrink()
-                : Container(
-                    padding: const EdgeInsets.fromLTRB(14, 0, 24, 0),
-                    child: Row(
-                      children: [
-                        Switch(
-                          activeColor: const Color(0xFF5B4DA7),
-                          value: deliveryFreeSwitch,
-                          onChanged: (newValue) {
-                            setState(() => deliveryFreeSwitch = newValue);
-                          },
-                        ),
-                        const Text.rich(
-                          TextSpan(
-                            text: 'Apenas ',
-                            style: TextStyle(
-                              color: Color(0xFF707070),
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'entrega grátis',
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          '$paintsCount resultados',
-                          style: const TextStyle(
-                            color: Color(0xFF707070),
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+          if (currentPage == 0 && !hasPaintSelected())
+            PaintSearchBar(
+              paintsCount: paintsCount,
+              hasPaintSelected: hasPaintSelected(),
+              inputUpdated: (searchValue, switchValue) {
+                setState(() {
+                  searchInput = searchValue;
+                  deliveryFreeSwitch = switchValue;
+                });
+              },
+            ),
           if (currentPage == 0)
             currentPage == 0 && hasPaintSelected()
                 ? PaintInfo(
@@ -156,118 +98,14 @@ class _PaintsPageState extends State<PaintsPage> {
                       setState(() => paintsCount = count);
                     }),
                   ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(0, 13, 13, 20),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12),
-                topRight: Radius.circular(12),
-                bottomLeft: Radius.circular(0),
-                bottomRight: Radius.circular(0),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    debugPrint('tap store');
-                    setState(() {
-                      currentPage = 0;
-                      selectedPaintIndex = -1;
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.storefront_outlined,
-                        size: 35,
-                        color: currentPage == 0
-                            ? const Color(0xFF5B4DA7)
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Loja',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: currentPage == 0
-                              ? const Color(0xFF5B4DA7)
-                              : Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    debugPrint('tap cart');
-                    setState(() {
-                      currentPage = 1;
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.shopping_cart_outlined,
-                        size: 35,
-                        color: currentPage == 1
-                            ? const Color(0xFF5B4DA7)
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Carrinho',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: currentPage == 1
-                              ? const Color(0xFF5B4DA7)
-                              : Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    debugPrint('tap profile');
-                    setState(() {
-                      currentPage = 2;
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Icon(
-                        Icons.person_outline_rounded,
-                        size: 35,
-                        color: currentPage == 2
-                            ? const Color(0xFF5B4DA7)
-                            : Colors.grey,
-                      ),
-                      Text(
-                        'Perfil',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: currentPage == 2
-                              ? const Color(0xFF5B4DA7)
-                              : Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+          CustomNavigationBar(
+            onTap: (selection) {
+              setState(() {
+                currentPage = selection;
+                if (selection == 0) selectedPaintIndex = -1;
+              });
+            },
+            currentPage: currentPage,
           ),
         ],
       ),
