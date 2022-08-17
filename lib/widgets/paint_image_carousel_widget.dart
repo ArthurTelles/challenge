@@ -18,6 +18,8 @@ class PaintImageCarousel extends StatefulWidget {
 
 class _PaintImageCarouselState extends State<PaintImageCarousel> {
   bool runningAnimation = false;
+
+  //Function animates the transition between images with a fade
   void callNewImage(updateValue) {
     setState(() => runningAnimation = true);
     Future.delayed(const Duration(milliseconds: 250), () {

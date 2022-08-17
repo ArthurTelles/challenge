@@ -36,12 +36,14 @@ class _PaintInfoState extends State<PaintInfo> {
   List<CartInfo> cartInfos = [];
   DioRepository dio = DioRepository();
 
+  //Initializes the page with the request of information
   @override
   void initState() {
     getPaintDifferential();
     super.initState();
   }
 
+  //Function makes the request for the paint images and differentials
   Future getPaintDifferential() async {
     List<Response> responses;
     try {
@@ -69,6 +71,7 @@ class _PaintInfoState extends State<PaintInfo> {
     loading = false;
   }
 
+  //Function makes a POST or a PUT request in the user cart
   Future updateCart() async {
     Response paintResponse, cartResponse;
     try {

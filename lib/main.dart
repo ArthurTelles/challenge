@@ -43,8 +43,11 @@ class _RootPageState extends State<RootPage> {
   List<Widget> pages = const [LoginPage(), PaintsPage()];
   @override
   Widget build(BuildContext context) {
+    //Checking if user has a valid login
     String? accessToken = LoginData.getAccessToken();
     debugPrint('accessToken $accessToken');
+
+    //If user has a valid login redirect to the paints main page
     if (accessToken != null) {
       debugPrint('Has login');
       setState(() => currentPage = 1);

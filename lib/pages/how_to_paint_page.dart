@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class HowToPaint extends StatelessWidget {
   HowToPaint({super.key});
 
+  //Static list of items that will be used to present the step by step
+  //of the painting process for the user
   final List<dynamic> howToPaintItems = [
     {
       'number': '1',

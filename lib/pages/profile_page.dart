@@ -17,6 +17,7 @@ class _PaintsPageState extends State<PaintsPage> {
   int selectedPaintIndex = -1;
   List<dynamic> currentPaints = [];
 
+  //Function check if the user has selected any paint to see the info
   bool hasPaintSelected() => selectedPaintIndex != -1;
 
   @override

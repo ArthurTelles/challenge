@@ -22,6 +22,7 @@ class _PaintSearchBarState extends State<PaintSearchBar> {
   String searchInput = '';
   bool deliveryFreeSwitch = false;
 
+  //Function emits a callback with the latest info of the search input
   void emitUpdate() {
     widget.inputUpdated(searchInput, deliveryFreeSwitch);
   }
