@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
 
 typedef Callback = void Function(Paint value, int index);
 
-class PaintWidget extends StatelessWidget {
-  const PaintWidget({
+class PaintInfoCard extends StatelessWidget {
+  const PaintInfoCard({
     Key? key,
     required this.index,
     required this.paint,

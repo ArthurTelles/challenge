@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:challenge/classes/sign_classes.dart';
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/datasources/sign_classes.dart';
+import 'package:challenge/repositories/dio_repository.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
 import 'package:challenge/pages/paints_page.dart';
 import 'package:challenge/widgets/custom_form_widget.dart';
 import 'package:dio/dio.dart';
@@ -25,7 +25,7 @@ class _RegisterPageState extends State<RegisterPage> {
         registerData.password == registerData.passwordConfirm;
   }
 
-  DioClient dio = DioClient();
+  DioRepository dio = DioRepository();
   UserRegister userRegister = UserRegister();
 
   Future registerUser() async {

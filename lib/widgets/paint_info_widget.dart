@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/repositories/dio_repository.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
+import 'package:challenge/widgets/action_button_widget.dart';
 import 'package:challenge/widgets/paint_action_buttons_widget.dart';
 import 'package:challenge/widgets/paint_differentials_widget.dart';
 import 'package:challenge/widgets/paint_image_carousel_widget.dart';
@@ -33,7 +34,7 @@ class _PaintInfoState extends State<PaintInfo> {
   Paint paintInfo = Paint();
   CartInfoRequest cartInfoRequest = CartInfoRequest();
   List<CartInfo> cartInfos = [];
-  DioClient dio = DioClient();
+  DioRepository dio = DioRepository();
 
   @override
   void initState() {
@@ -138,33 +139,17 @@ class _PaintInfoState extends State<PaintInfo> {
                         differentials: paintDifferentials,
                       ),
                     ),
-                    GestureDetector(
-                      onTap: (() {
-                        debugPrint('Add to cart');
-                        setState(() => loadingCart = true);
-                        updateCart();
-                      }),
-                      child: Container(
-                        margin: const EdgeInsets.fromLTRB(0, 26, 0, 26),
-                        padding: const EdgeInsets.fromLTRB(53, 17, 53, 17),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Color(0xFF5B4DA7),
-                        ),
-                        child: loadingCart
-                            ? const CircularProgressIndicator(
-                                color: Colors.white,
-                              )
-                            : const Text(
-                                'Adicionar ao carrinho',
-                                style: TextStyle(
-                                  fontSize: 19,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                      ),
-                    )
+                    ActionButton(
+                      loading: loadingCart,
+                      text: 'Adicionar ao carrinho',
+                      onTap: () {
+                        setState(() {
+                          debugPrint('Add to cart');
+                          setState(() => loadingCart = true);
+                          updateCart();
+                        });
+                      },
+                    ),
                   ],
                 ),
               ),

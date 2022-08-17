@@ -1,5 +1,5 @@
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/repositories/dio_repository.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
 import 'package:challenge/pages/login_page.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class ProfileInfo extends StatefulWidget {
 class _ProfileInfoState extends State<ProfileInfo> {
   bool loading = true;
   ProfileInfoRequest profileInfoRequest = ProfileInfoRequest();
-  DioClient dio = DioClient();
+  DioRepository dio = DioRepository();
 
   @override
   void initState() {
