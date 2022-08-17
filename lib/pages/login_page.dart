@@ -1,6 +1,6 @@
-import 'package:challenge/classes/sign_classes.dart';
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/datasources/sign_classes.dart';
+import 'package:challenge/repositories/dio_repository.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
 import 'package:challenge/pages/paints_page.dart';
 import 'package:challenge/pages/register_page.dart';
 import 'package:challenge/widgets/custom_form_widget.dart';
@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   String accessToken = '';
   LoginData loginData = LoginData('', '');
 
-  DioClient dio = DioClient();
+  DioRepository dio = DioRepository();
   UserLogin userLogin = UserLogin();
 
   Future loginUser() async {

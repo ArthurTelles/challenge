@@ -3,11 +3,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 
-class DioClient {
+class DioRepository {
   Dio _dio = Dio();
   final _baseUrl = 'https://62968cc557b625860610144c.mockapi.io/';
 
-  DioClient() {
+  DioRepository() {
     _dio = Dio(
       BaseOptions(
         baseUrl: _baseUrl,

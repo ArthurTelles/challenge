@@ -1,7 +1,8 @@
 import 'dart:convert';
 
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/repositories/dio_repository.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
+import 'package:challenge/widgets/action_button_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +15,11 @@ class PaintCart extends StatefulWidget {
 
 class _PaintCartState extends State<PaintCart> {
   bool loading = true;
+  bool loadingButton = false;
   CartInfoRequest cartInfoRequest = CartInfoRequest();
   CartInfo cartItemUpdated = CartInfo();
   List<CartInfo> cartInfos = [];
-  DioClient dio = DioClient();
+  DioRepository dio = DioRepository();
 
   @override
   void initState() {
@@ -63,7 +65,7 @@ class _PaintCartState extends State<PaintCart> {
     } on Exception catch (error) {
       debugPrint('error $error');
     }
-    setState(() => loading = false);
+    setState(() => loadingButton = false);
   }
 
   List<DropdownMenuItem<String>> getDropDownItems() {
@@ -160,7 +162,7 @@ class _PaintCartState extends State<PaintCart> {
                                     width:
                                         MediaQuery.of(context).size.width - 169,
                                     margin:
-                                        const EdgeInsets.fromLTRB(0, 4, 0, 4),
+                                        const EdgeInsets.fromLTRB(0, 8, 0, 8),
                                     height: 1.0,
                                     color: Colors.grey,
                                   ),
@@ -171,18 +173,31 @@ class _PaintCartState extends State<PaintCart> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        DropdownButton(
-                                          items: getDropDownItems(),
-                                          value: paintQuantity,
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(3)),
-                                          onChanged: (String? value) {
-                                            debugPrint(
-                                                'Change paint value $value of paint ${paintInfo.id}');
-                                            setState(() => loading = true);
-                                            updateCartItem(
-                                                paintInfo.id!, value!);
-                                          },
+                                        DecoratedBox(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                              width: 1,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(3),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                6, 0, 6, 0),
+                                            child: DropdownButton(
+                                              items: getDropDownItems(),
+                                              value: paintQuantity,
+                                              isDense: true,
+                                              onChanged: (String? value) {
+                                                debugPrint(
+                                                    'Change paint value $value of paint ${paintInfo.id}');
+                                                setState(() => loading = true);
+                                                updateCartItem(
+                                                    paintInfo.id!, value!);
+                                              },
+                                            ),
+                                          ),
                                         ),
                                         Text(
                                           'R\$ ${paintInfo.paint?.price}'
@@ -202,35 +217,17 @@ class _PaintCartState extends State<PaintCart> {
                           ),
                         ),
                         if (index == cartInfos.length - 1)
-                          GestureDetector(
-                            onTap: (() {
-                              debugPrint('Clear cart');
-                              setState(() => loading = true);
-                              clearCart();
-                            }),
-                            child: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 26, 0, 26),
-                              padding:
-                                  const EdgeInsets.fromLTRB(53, 17, 53, 17),
-                              decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(50)),
-                                color: Color(0xFF5B4DA7),
-                              ),
-                              child: loading
-                                  ? const CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
-                                  : const Text(
-                                      'Confirmar compra',
-                                      style: TextStyle(
-                                        fontSize: 19,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                            ),
-                          )
+                          ActionButton(
+                            loading: loadingButton,
+                            text: 'Confirmar compra',
+                            onTap: () {
+                              setState(() {
+                                debugPrint('Add to cart');
+                                setState(() => loadingButton = true);
+                                clearCart();
+                              });
+                            },
+                          ),
                       ],
                     );
                   }),

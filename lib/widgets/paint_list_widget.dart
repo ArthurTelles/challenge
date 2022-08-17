@@ -1,8 +1,8 @@
-import 'package:challenge/dio/dio_client.dart';
-import 'package:challenge/widgets/paint_widget.dart';
+import 'package:challenge/repositories/dio_repository.dart';
+import 'package:challenge/widgets/paint_info_card_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:challenge/dio/response_classes.dart';
+import 'package:challenge/datasources/responses_datasources.dart';
 
 typedef CallbackSelected = void Function(List<Paint> paints, int index);
 typedef CallbackCont = void Function(int count);
@@ -32,7 +32,7 @@ class _PaintsListState extends State<PaintsList> {
   Paints paintsResponse = Paints();
   List<Paint> paints = [];
   List<Paint> paintsDeliveryFree = [];
-  DioClient dio = DioClient();
+  DioRepository dio = DioRepository();
 
   final ScrollController _scrollController = ScrollController();
 
@@ -138,7 +138,7 @@ class _PaintsListState extends State<PaintsList> {
                   itemCount: getPaintsArray().length,
                   itemBuilder: ((context, index) {
                     final paint = getPaintsArray()[index];
-                    return PaintWidget(
+                    return PaintInfoCard(
                       paint: paint,
                       index: index,
                       callback: (value, index) {

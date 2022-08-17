@@ -1,6 +1,6 @@
 import 'package:challenge/pages/paints_page.dart';
 import 'package:challenge/pages/login_page.dart';
-import 'package:challenge/classes/sign_classes.dart';
+import 'package:challenge/datasources/sign_classes.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
