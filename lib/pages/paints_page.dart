@@ -22,8 +22,13 @@ class _PaintsPageState extends State<PaintsPage> {
   List<dynamic> currentPaints = [];
   int currentPage = 0;
 
+  //Function check if the button to return the page should be presented
   bool showBackButton() => selectedPaintIndex != -1 && currentPage == 0;
+
+  //Function check if the user has selected any paint to see the info
   bool hasPaintSelected() => selectedPaintIndex != -1;
+
+  //Function returns the page title based on the current page
   String getPageTitle() {
     switch (currentPage) {
       case 0:

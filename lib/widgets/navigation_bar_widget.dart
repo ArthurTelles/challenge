@@ -19,6 +19,7 @@ class CustomNavigationBar extends StatefulWidget {
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
   int currentSelection = 0;
 
+  //Function emits a update in the user current selection
   void emitUpdate() {
     widget.onTap(currentSelection);
   }

@@ -21,12 +21,14 @@ class _PaintCartState extends State<PaintCart> {
   List<CartInfo> cartInfos = [];
   DioRepository dio = DioRepository();
 
+  //Initializes the page with the request of information
   @override
   void initState() {
     getCartInfo();
     super.initState();
   }
 
+  //Function to request the current card
   Future getCartInfo() async {
     Response response;
     try {
@@ -40,6 +42,7 @@ class _PaintCartState extends State<PaintCart> {
     setState(() => loading = false);
   }
 
+  //Function to update the cart item quantity
   Future updateCartItem(String paintId, String quantity) async {
     Response response;
     try {
@@ -56,6 +59,7 @@ class _PaintCartState extends State<PaintCart> {
     setState(() => loading = false);
   }
 
+  //Function to completely clear the user cart to give the impression of purchase
   Future clearCart() async {
     try {
       for (var cartInfo in cartInfos) {
@@ -68,6 +72,7 @@ class _PaintCartState extends State<PaintCart> {
     setState(() => loadingButton = false);
   }
 
+  //Function returns the list of unities the user can set for the paint
   List<DropdownMenuItem<String>> getDropDownItems() {
     List<DropdownMenuItem<String>> items = [];
     for (var index = 1; index <= 10; index++) {

@@ -36,6 +36,7 @@ class _PaintsListState extends State<PaintsList> {
 
   final ScrollController _scrollController = ScrollController();
 
+  //Function used to monitor changes from the father
   @override
   void didUpdateWidget(PaintsList oldWidget) {
     super.didUpdateWidget(oldWidget);
@@ -46,6 +47,7 @@ class _PaintsListState extends State<PaintsList> {
     }
   }
 
+  //Function initializes the controller of the scroll to monitor when the user reachs the bottom
   @override
   void initState() {
     search = widget.searchInput;
@@ -65,16 +67,19 @@ class _PaintsListState extends State<PaintsList> {
     super.initState();
   }
 
+  //Discarts the controller of the scroll when the object is removed from the tree
   @override
   void dispose() {
     super.dispose();
     _scrollController.dispose();
   }
 
+  //Returns the desired array based on the filter
   List<Paint> getPaintsArray() {
     return widget.deliveryFreeSwitchInput ? paintsDeliveryFree : paints;
   }
 
+  //Function makes the GET request based on the search fields
   Future getPaints() async {
     Response response;
     try {

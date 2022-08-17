@@ -22,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   DioRepository dio = DioRepository();
   UserLogin userLogin = UserLogin();
 
+  //Function makes a GET request to login the user and save the access token provided
   Future loginUser() async {
     Response response;
     try {

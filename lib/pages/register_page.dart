@@ -17,7 +17,10 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   bool loading = false;
   RegisterData registerData = RegisterData('', '', '', '');
+  DioRepository dio = DioRepository();
+  UserRegister userRegister = UserRegister();
 
+  //Function validates the user data for sign up
   bool validEntry() {
     return registerData.name != '' &&
         registerData.email != '' &&
@@ -25,9 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
         registerData.password == registerData.passwordConfirm;
   }
 
-  DioRepository dio = DioRepository();
-  UserRegister userRegister = UserRegister();
-
+  //Function makes a POST to register the user and save a random access token
   Future registerUser() async {
     Response response;
     try {

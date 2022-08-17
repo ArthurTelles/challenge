@@ -23,6 +23,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
     super.initState();
   }
 
+  //Function used to request the profile info of the user
   Future getProfileInfo() async {
     Response response;
     try {
@@ -41,6 +42,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
     loading = false;
   }
 
+  //Function used to request the logout of the user and clear the local info
   Future logoutUser() async {
     Response response;
     try {
@@ -59,6 +61,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
     loading = false;
   }
 
+  //Function call the login screen with a custom animation for better feedback
   void sendUserToLogin() {
     Navigator.pushReplacement(
       context,

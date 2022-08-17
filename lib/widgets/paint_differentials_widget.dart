@@ -8,17 +8,15 @@ class PaintDifferentialsWidget extends StatelessWidget {
 
   final List<dynamic> differentials;
 
+  //Function returns the image name based on the differential
   String getDifferentialImage(differentialName) {
     switch (differentialName) {
       case 'Ergonomic':
         return 'brush';
-
       case 'Tasty':
         return 'smell';
-
       case 'Handcrafted':
         return 'paint_bucket';
-
       default:
         return 'stars';
     }
